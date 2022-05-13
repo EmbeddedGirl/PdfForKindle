@@ -15,17 +15,17 @@ def main(srcpdfpath, workpath, max_process_page_num,
          cliptype, marginlength, imageformat):
     
     if not os.path.exists(srcpdfpath):
-        print 'PDF {0} not exists'.format(srcpdfpath)
+        print('PDF {0} not exists'.format(srcpdfpath))
         return
     if not os.path.exists(workpath):
-        print 'workspace {0} not exists'.format(srcpdfpath)
+        print('workspace {0} not exists'.format(workpath))
         return
             
     pdfname = os.path.splitext(os.path.basename(srcpdfpath))[0]    
         
     md5 = md5sum(srcpdfpath)
 
-    print 'pdf', pdfname ,'md5', md5
+    print('pdf', pdfname ,'md5', md5)
 
     pdfbasepath = os.path.join(workpath, md5)
     pdf_image_save_path = os.path.join(pdfbasepath, 'image')
@@ -37,7 +37,7 @@ def main(srcpdfpath, workpath, max_process_page_num,
         is_create_image = False
         
     if not os.path.exists(os.path.join(workpath, md5)):      
-        print   pdfbasepath
+        print(pdfbasepath)
         os.mkdir(pdfbasepath)
         os.mkdir(pdf_image_save_path)
         
@@ -55,7 +55,7 @@ def main(srcpdfpath, workpath, max_process_page_num,
         process_page_num = len(os.listdir(pdf_image_save_path))
 
     for i in range(process_page_num):
-        print 'page', i
+        print('page', i)
         split_image(r'{0}\{1}.{2}'.format(pdf_image_save_path, i, imageformat),
                     i,
                     pdf_sub_image_save_path,
@@ -66,10 +66,10 @@ def main(srcpdfpath, workpath, max_process_page_num,
     clip_pdf_path = 'kindle_{0}.pdf'.format(cliptype)
     savepdfname = os.path.join(pdfbasepath, clip_pdf_path)      
     create_pdf(savepdfname, pdf_sub_image_save_path, process_page_num, cliptype, imageformat)
-    renamepath = os.path.join(pdfbasepath, pdfname + str(cliptype)+'.pdf')  
+    renamepath = os.path.join(pdfbasepath, str(cliptype)+pdfname+'.pdf')
         
     shutil.move(savepdfname, renamepath)
-    print 'saved pdf to ',renamepath
+    print('saved pdf to ',renamepath)
 
 def md5sum(filename):
     """
@@ -78,7 +78,7 @@ def md5sum(filename):
     :return: MD5码
     """
     if not os.path.isfile(filename):  # 如果校验md5的文件不是文件，返回空
-        print 'not file', filename
+        print('not file', filename)
         return
     myhash = hashlib.md5()
     f = open(filename, 'rb')
@@ -90,24 +90,29 @@ def md5sum(filename):
     f.close()
     return myhash.hexdigest()
     
-if __name__ == '__main__': 
-      
-    pdfpath = r'E:\book\Python核心编程.pdf'
-    pdfpath = r'D:\BaiduNetdiskDownload\jiqixuexi.pdf'
-    pdfpath = r'D:\BaiduNetdiskDownload\tongjixuexifangfa.pdf' 
-    pdfpath = unicode(pdfpath, 'utf-8')
-    
-    workpath = r'D:\Users\Administrator\PdfForKindle\tmp\pdf'
+if __name__ == '__main__':
+    # pdfpath = r'E:\book\Python核心编程.pdf'
+    # pdfpath = r'D:\BaiduNetdiskDownload\jiqixuexi.pdf'
+    # pdfpath = r'D:\BaiduNetdiskDownload\tongjixuexifangfa.pdf'
+    # pdfpath = r'D:\liblinear.pdf'
+
+    # pdfpath = unicode(pdfpath, 'utf-8')
+
+    # start
     max_process_page_num = None
     marginlength = 5
-    print 'start'
-    
-    main(pdfpath,
-         workpath,
-         max_process_page_num,
-         ClipType.ALL,
-         marginlength,
-         ClipImageFormat.JPG)
+    print('start')
 
-    
-    
+    des_dir = r"D:\data\kindle_book"
+    workpath = os.path.join(des_dir, r'pdf')
+    des_dir = os.path.join(des_dir,"des")
+    files_list = os.listdir(des_dir)
+    for file_name in files_list:
+        if file_name.endswith(".pdf"):
+            pdfpath = os.path.join(des_dir, file_name)
+            main(pdfpath,
+                 workpath,
+                 max_process_page_num,
+                 ClipType.MARGIN_ONLY,
+                 marginlength,
+                 ClipImageFormat.JPG)

@@ -17,6 +17,18 @@
  
  2017 alex All Rights Reserved.
   
+## 修改记录
+ * python3.6 运行，print i 改为  print(i)
+   
+## 依赖包
+ * pip install PyPDF4
+ * pip install ImageMagick
+ * pip install opencv-python
+ * pip install unicode
+ * pip install reportlab
+ * pip install wand
+ * install MagickWand (https://docs.wand-py.org/en/latest/guide/install.html#install-imagemagick-on-windows)
+ * install ghostscript (https://ghostscript.com/releases/gsdnld.html)
 
 
 

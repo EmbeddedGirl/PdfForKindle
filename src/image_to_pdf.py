@@ -24,7 +24,7 @@ def create_pdf(filename, path,page,cliptype,imageformat):
     Story=[]  
 
     for page in range(page):
-        print 'create_pdf',page
+        print('create_pdf',page)
         image1 = os.path.join(path,'{0}.{1}.{2}'.format(page,'1',imageformat))
         image2 = os.path.join(path,'{0}.{1}.{2}'.format(page,'2',imageformat))
         image3 = os.path.join(path,'{0}.{1}.{2}'.format(page,'3',imageformat))
@@ -39,7 +39,7 @@ def create_pdf(filename, path,page,cliptype,imageformat):
             Story.append(PageBreak())  
 
     doc.build(Story)  
-    print "%s created" % filename  
+    print("%s created" % filename)
 #----------------------------------------------------------------------  
 if __name__ == "__main__":  
     cliptype=ClipType.MARGIN_ONLY

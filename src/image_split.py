@@ -5,8 +5,8 @@ import numpy as np
 
 class ClipType(object):    
     
-    ALL=0 # clip the margin and split the image
-    MARGIN_ONLY = 1
+    ALL = "c"  # clip the margin and split the image
+    MARGIN_ONLY = "r"
     
 class ClipImageFormat(object):
     JPG='jpg'
@@ -42,7 +42,7 @@ def write_image(savepath,image_color,margin_length=70):
     if range:
         start=range[0]
         end=range[1]
-        print 'range',range
+        print('range',range)
         if start>margin_length:
             start=start-margin_length
         if w-end>margin_length:
@@ -54,11 +54,11 @@ def write_image(savepath,image_color,margin_length=70):
 def get_clip_points(image_color,peek_ranges,savepath,page,imageformat='jpg',partnumber=3):
     h = image_color.shape[0]
     w = image_color.shape[1]
-    print 'heigth',h
+    print('heigth',h)
     prepart=0
     preline=0
     part=1
-    print 'peek len',len(peek_ranges)
+    print('peek len',len(peek_ranges))
     len_peek_ranges=len(peek_ranges)
     
     if len_peek_ranges == 0:
@@ -73,21 +73,21 @@ def get_clip_points(image_color,peek_ranges,savepath,page,imageformat='jpg',part
         return
 
     for i ,peek_range in enumerate(peek_ranges):
-        print 'peek_range i {0} peekrange {1} part {2} partnum {3}'.format(i,peek_range,part, 1.0*h*part/partnumber)
+        print('peek_range i {0} peekrange {1} part {2} partnum {3}'.format(i,peek_range,part, 1.0*h*part/partnumber))
         if  i== len_peek_ranges-1:
             cropImg = image_color[prepart:peek_range[1], 0:w]
-            print 'clip 1',prepart,peek_range[1]
+            print('clip 1',prepart,peek_range[1])
             write_image(os.path.join(savepath,'{0}.{1}.{2}'.format(page,part,imageformat)),cropImg)
             break
         elif  peek_range[1] > 1.0*h*part/partnumber :
             clip= preline+int((peek_range[0]-preline)/2)
-            print 'clip 2 prepart {} clip {} preline {}'.format(prepart,clip,preline)
+            print('clip 2 prepart {} clip {} preline {}'.format(prepart,clip,preline))
             cropImg = image_color[prepart:peek_range[1], 0:w]
             write_image(os.path.join(savepath,'{0}.{1}.{2}'.format(page,part,imageformat)),cropImg)  
             
             if part == partnumber-1:
                 cropImg = image_color[peek_range[1]:h, 0:w]
-                print 'clip 3',clip,h
+                print('clip 3',clip,h)
                 write_image(os.path.join(savepath,'{0}.{1}.{2}'.format(page,part+1,imageformat)),cropImg)
                 break 
             prepart=peek_range[1]
@@ -108,7 +108,7 @@ def get_peek_ranges_from_image(image,minimun_val,minimun_range,direction=1):
 
 def get_start_end(image,direction):
     peek_ranges=get_peek_ranges_from_image(image,minimun_val=2000,minimun_range=2,direction=0)
-    print peek_ranges
+    print(peek_ranges)
     if len(peek_ranges)==1:
         return peek_ranges[0][0],peek_ranges[0][1]
     elif len(peek_ranges)>=2:
@@ -118,7 +118,7 @@ def get_start_end(image,direction):
 def split_image(imagepath,page,savepath,margin_length,imageformat,cliptype=ClipType.MARGIN_ONLY):
 
     if not os.path.exists(imagepath):
-        print imagepath ,'not exists'
+        print(imagepath ,'not exists')
         return 
     image_color = cv2.imread(imagepath)
     if cliptype == ClipType.MARGIN_ONLY:
@@ -141,7 +141,7 @@ def split_image(imagepath,page,savepath,margin_length,imageformat,cliptype=ClipT
     
 if __name__ == '__main__':
     for i in range(20):
-        print i
+        print('create_pdf',page)
         split_image(r'.\tmp\pdf\484d8037a509648a8e09fc0466b06f38\image\{0}.png'.format(i),i,'./tmp/pdf/484d8037a509648a8e09fc0466b06f38/subimage',
                     1,'jpg',ClipType.ALL)
 # cv2.imshow('binary image', adaptive_threshold)
